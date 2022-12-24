@@ -8,7 +8,6 @@
 #include <vector>
 
 #include <AK/FloatingPoint.h>
-#include <AK/Random.h>
 #include <AK/StringFloatingPointConversions.h>
 #include <LibCore/ArgsParser.h>
 
@@ -151,6 +150,7 @@ int main(int argc, char** argv)
 
     u64 count = 100'000'000;
     int what = 0;
+    u64 seed = 37714;
     Core::ArgsParser args_parser;
     args_parser.add_option(what, R"(What to do?
             0 = benchmark double
@@ -160,12 +160,13 @@ int main(int argc, char** argv)
             4 = benchmark float)",
         "type", 't', "type");
     args_parser.add_option(count, "Number of conversions to benchmark", "number", 'n', "number");
+    args_parser.add_option(seed, "Seed for random", "seed", 's', "seed");
     args_parser.parse(argc, argv);
 
     if (what == 0) {
-        benchmark<double, uint64_t, std::mt19937_64>(count);
+        benchmark<double, uint64_t, std::mt19937_64>(count, seed);
     } else if (what == 1) {
-        stress_double();
+        stress_double(seed);
     } else if (what == 2) {
         check_interestring_double();
     } else if (what == 3) {

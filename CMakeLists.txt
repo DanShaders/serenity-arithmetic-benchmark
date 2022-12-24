@@ -37,12 +37,16 @@ add_compile_options(-Wundef)
 add_compile_options(-Wunused)
 add_compile_options(-Wwrite-strings)
 add_compile_options(-fno-exceptions)
-add_compile_options(-Wno-error)
+add_compile_options(-mlong-double-64)
+add_compile_options(-Wno-error=cast-align)
+add_compile_options(-Wno-error=double-promotion)
+add_compile_options(-Wno-error=unused-variable)
+add_compile_options(-Wno-error=unused-parameter)
 
 option(ENABLE_ADDRESS_SANITIZER "Enable address sanitizer testing in gcc/clang" OFF)
 option(ENABLE_UNDEFINED_SANITIZER "Enable undefined behavior sanitizer testing in gcc/clang" OFF)
 
-add_compile_options(-O2)
+add_compile_options(-O2 -g)
 
 if (ENABLE_ADDRESS_SANITIZER)
     add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
@@ -68,3 +72,9 @@ add_executable(StringFloatingPointConversions
                StringFloatingPointConversions.cpp)
 
 target_link_libraries(StringFloatingPointConversions LibCore dragonbox::dragonbox)
+
+add_executable(UFixedBigInt
+               UFixedBigInt.cpp)
+
+target_link_libraries(UFixedBigInt LibCore)
+target_link_libraries(UFixedBigInt gmp)
